@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "@zelz/eslint-config",
+    "@zelz/eslint-config/react",
+    "@zelz/eslint-config/prettier"
+  ],
+  "rules": {
+    "no-nested-ternary": "off"
+  }
+}
