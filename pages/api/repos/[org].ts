@@ -1,3 +1,4 @@
+import 'utils/nodePolyfills';
 import { NextApiRequest, NextApiResponse } from 'next';
 import fetchGithub from 'utils/fetchGithub';
 import parseGithubLink from 'utils/parseGithubLink';
