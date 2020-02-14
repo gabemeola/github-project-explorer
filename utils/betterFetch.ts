@@ -33,6 +33,7 @@ export default function betterFetch<T = any>(
       throw response;
     })
     .catch((err: Response) => {
+      // Re-throw error
       throw err;
     });
 

@@ -14,6 +14,8 @@ type Props = {
 
 export default function Search({ org = '' }: Props) {
   const router = useRouter();
+  // TODO: Better to use a state machine like xstate
+  // or a reducer, since these states are correlated.
   const [repos, setRepos] = useState<Repos | null>(null);
   const [hasError, setHasError] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<SortOptions>(SortOptions.popular);
@@ -36,11 +38,6 @@ export default function Search({ org = '' }: Props) {
     };
   }, [org, setRepos]);
 
-  const sortedRepos = useMemo(() => {
-    if (repos === null) return [];
-    return sortWithOption(repos, sortOption);
-  }, [repos, sortOption]);
-
   const onSortChange = (option: SortOptions) => {
     setSortOption(option);
   };
@@ -53,6 +50,11 @@ export default function Search({ org = '' }: Props) {
   const handleSearchChange = (ev: ChangeEvent<HTMLInputElement>) => {
     setSearchOrg(ev.target.value);
   };
+
+  const sortedRepos = useMemo(() => {
+    if (repos === null) return [];
+    return sortWithOption(repos, sortOption);
+  }, [repos, sortOption]);
 
   return (
     <Fragment>
@@ -71,7 +73,7 @@ export default function Search({ org = '' }: Props) {
             className={styles.input}
             value={searchOrg}
             onChange={handleSearchChange}
-            placeholder="Workfront"
+            placeholder="Netflix"
           />
         </label>
       </form>

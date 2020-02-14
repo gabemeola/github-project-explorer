@@ -7,6 +7,7 @@ type Props = {
 };
 
 function parseCommitMessage(message: string): [string, Array<string> | null] {
+  // Split commit message on newlines and filter out empty strings
   const split = message.split('\n').filter((m) => m !== '');
   const commitTitle = split[0];
   const commitBody = split[1] ? split.slice(1) : null;

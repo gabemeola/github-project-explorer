@@ -12,7 +12,7 @@ export default function Home() {
 
       <Search />
       <br />
-      <h3>Try searching for a Github Organization such as &quot;Workfront&quot;</h3>
+      <h3>Try searching for a Github Organization such as &quot;Netflix&quot;</h3>
     </main>
   );
 }

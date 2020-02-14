@@ -10,6 +10,8 @@ export default function RepoDetails() {
   const router = useRouter();
   const org = router.query.org as string | undefined;
   const repo = router.query.repo as string | undefined;
+  // TODO: Better to use a state machine like xstate
+  // or a reducer, since these states are derived.
   const [commits, setCommits] = useState<Commits>([]);
   const [hasError, setHasError] = useState<boolean>(false);
 

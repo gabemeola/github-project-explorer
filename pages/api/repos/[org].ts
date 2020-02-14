@@ -4,10 +4,18 @@ import fetchGithub from 'utils/fetchGithub';
 import parseGithubLink from 'utils/parseGithubLink';
 import { Repos } from 'models/repos';
 
+/**
+ * Recursively fetches an organization's repos
+ * up to until reaching 100.
+ *
+ * @param url - Url of Github API to fetch
+ * @param [collectedRepos] - Repos collected so far. Defaults to an empty array.
+ */
 async function collectGithubRepos(url: string, collectedRepos: Repos = []): Promise<Repos> {
   const fetchRes = await fetchGithub<Repos>(url);
   collectedRepos.push(...fetchRes.data);
 
+  // Parse "next" rel links
   const relLinks = fetchRes.headers.get('link');
   if (relLinks != null) {
     const parsedLinks = parseGithubLink(relLinks);
@@ -21,7 +29,7 @@ async function collectGithubRepos(url: string, collectedRepos: Repos = []): Prom
 }
 
 // Bypass rate limiting in development
-const repoCache = new Map();
+const repoCache = new Map<string, Repos>();
 
 export default async function getOrgRepos(req: NextApiRequest, res: NextApiResponse) {
   const org = req.query.org as string;
@@ -39,6 +47,7 @@ export default async function getOrgRepos(req: NextApiRequest, res: NextApiRespo
     repoCache.set(org, repos);
     res.send(repos);
   } catch (err) {
-    res.status(err.status).send('');
+    console.error(err);
+    res.status(err.status).send(err.statusText);
   }
 }

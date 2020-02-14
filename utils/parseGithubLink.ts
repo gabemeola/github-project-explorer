@@ -1,5 +1,10 @@
-// Shamelessly copied
-// https://github.com/samverschueren/github-parse-link
+/**
+ * Parses Github's rel header links.
+ * Shamelessly copied
+ * https://github.com/samverschueren/github-parse-link
+ *
+ * @param link - Response header link
+ */
 export default function parseGithubLink(link: string) {
   return link.split(', ').reduce((result, part) => {
     const match = part.match('<(.*?)>; rel="(.*?)"');

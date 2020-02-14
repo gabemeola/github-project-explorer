@@ -1,3 +1,5 @@
+// TODO: This is a great file to add test coverage
+// to as it contains some core business logic.
 import { Repos, Repo } from 'models/repos';
 
 export enum SortOptions {
@@ -5,6 +7,20 @@ export enum SortOptions {
   'updated' = 'updated',
   'issues' = 'issues',
   'stars' = 'stars',
+}
+
+/**
+ * Creates a Repo sorting function
+ * using comparison function.
+ *
+ * @param compareFn - Function use to create a comparison number
+ */
+function createSort(compareFn: (repo: Repo) => number) {
+  return (repos: Repos) => {
+    return repos.sort((a, b) => {
+      return compareFn(b) - compareFn(a);
+    });
+  };
 }
 
 /**
@@ -21,29 +37,10 @@ function createPopularScore(repo: Repo) {
   );
 }
 
-export function sortByPopularity(repos: Repos) {
-  return repos.sort((a, b) => {
-    return createPopularScore(b) - createPopularScore(a);
-  });
-}
-
-export function sortByLastUpdated(repos: Repos) {
-  return repos.sort((a, b) => {
-    return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-  });
-}
-
-export function sortByIssues(repos: Repos) {
-  return repos.sort((a, b) => {
-    return b.open_issues_count - a.open_issues_count;
-  });
-}
-
-export function sortByStars(repos: Repos) {
-  return repos.sort((a, b) => {
-    return b.stargazers_count - a.stargazers_count;
-  });
-}
+export const sortByPopularity = createSort(createPopularScore);
+export const sortByLastUpdated = createSort((repo) => new Date(repo.updated_at).getTime());
+export const sortByIssues = createSort((repo) => repo.open_issues_count);
+export const sortByStars = createSort((repo) => repo.stargazers_count);
 
 export function sortWithOption(repos: Repos, option: SortOptions) {
   switch (option) {
